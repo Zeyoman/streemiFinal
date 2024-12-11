@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter une catégorie{% endblock %}
+
+{% block content %}
+    <h1 class="text-3xl font-bold text-center">Ajouter une langue</h1>
+
+    <a href="{{ path('app_admin_language_index') }}" class="mt-8 p-2 block">&larr; Retour à la liste des langues</a>
+
+    <div class="mt-5">
+        {{ include('admin/language/_form.html.twig') }}
+    </div>
+
+    <a href="{{ path('app_admin_language_index') }}" class="mt-8 p-2 block">&larr; Retour à la liste des langues</a>
+{% endblock %}

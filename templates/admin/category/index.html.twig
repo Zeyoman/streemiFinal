@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des Categories{% endblock %}
+
+{% block content %}
+    <div class="w-full p-4">
+        <div class="flex flex-col">
+            <h1 class="text-lg font-medium text-black ">
+                Administration <span class="font-bold text-red-600">des catégories</span>
+            </h1>
+            <a href="{{ path('admin') }}" class="mt-0 block">&larr; Retour au tableau de bord</a>
+            <a class="flex flex-col items-center mt-9 w-full" href="{{ path('app_admin_category_new') }}">
+                <div class="relative flex w-full bg-red-600 flex-row p-3 items-center justify-center rounded-lg overflow-hidden border cursor-pointer transition hover:bg-red-700 text-white">
+                    <span class="font-bold mr-2">
+                        <svg class="h-6 w-6" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>plus-circle</title><path d="M17,13H13V17H11V13H7V11H11V7H13V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/></svg>
+                    </span>
+                    <span class="capitalize font-medium text-md">Ajouter une nouvelle catégorie</span>
+                </div>
+            </a>
+        </div>
+
+        <table class="table table-striped w-full text-sm text-left text-gray-500 mt-8 border-2 rounded-md">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+            <tr>
+                <th class="px-6 py-3">Id</th>
+                <th class="px-6 py-3">Nom</th>
+                <th class="px-6 py-3">Label</th>
+                <th class="px-6 py-3">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for category in categories %}
+                <tr class="bg-white border-b">
+                    <td class="px-6 py-4">#{{ category.id }}</td>
+                    <td class="px-6 py-4">
+                        <a target="_blank" href="{{ path('show_category', {id: category.id}) }}" class="underline decoration-red-600">{{ category.nom }}</a>
+                    </td>
+                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{{ category.label }}</td>
+                    <td class="px-6 py-4">
+                        <a href="{{ path('app_admin_category_edit', {'id': category.id}) }}" class="bg-yellow-500 text-white p-2 rounded-md">Modifier</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">Aucune catégorie</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{{ path('admin') }}" class="mt-8 p-2 block">&larr; Retour au tableau de bord</a>
+    </div>
+{% endblock %}

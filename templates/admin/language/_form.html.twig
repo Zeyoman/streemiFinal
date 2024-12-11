@@ -1,0 +1,31 @@
+{{ form_start(form) }}
+
+<div class="mb-4">
+    {{ form_row(form.nom) }}
+</div>
+
+<div class="mb-4">
+    {{ form_row(form.code, { 'attr': { 'id': 'language_code' } }) }}
+</div>
+
+<div class="mb-4">
+    <span class="text-xs text-gray-500">Drapeau automatiquement récupéré, basé sur le code. (Si le drapeau ne s'affiche pas, vérifiez le code)</span>
+    <img src="" id="flag" alt="drapeau de la langue" class="h-10">
+</div>
+
+<button class="bg-green-600 hover:bg-green-700 transition text-white p-2 rounded-md w-full" type="submit">
+    &check;
+    {{ button_label|default('Ajouter la langue') }}
+</button>
+{{ form_end(form) }}
+
+<script>
+    const codeInput = document.querySelector('#language_code');
+    codeInput.addEventListener('input', (e) => {
+        const code = e.target.value;
+        const flag = document.querySelector('#flag');
+        flag.src = `https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/flags/4x3/${code}.svg`;
+    });
+
+    codeInput.dispatchEvent(new Event('input'));
+</script>

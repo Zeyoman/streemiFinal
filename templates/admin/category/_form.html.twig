@@ -1,0 +1,15 @@
+{{ form_start(form) }}
+
+<div class="mb-4">
+    {{ form_row(form.nom) }}
+</div>
+
+<div class="mb-4">
+    {{ form_row(form.label) }}
+</div>
+
+<button class="bg-green-600 hover:bg-green-700 transition text-white p-2 rounded-md w-full" type="submit">
+    &check;
+    {{ button_label|default('Ajouter la catégorie') }}
+</button>
+{{ form_end(form) }}

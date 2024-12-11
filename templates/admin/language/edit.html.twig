@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier {{ language.nom }}{% endblock %}
+
+{% block content %}
+    <div class="w-full p-4">
+        <h1 class="text-3xl font-bold text-center">Modifier la langue <span class="text-red-600">{{ language.nom }}</span></h1>
+
+        <a href="{{ path('app_admin_language_index') }}" class="mt-8 p-2 block">&larr; Retour à la liste des langues</a>
+
+        <div class="mt-5">
+            {{ include('admin/language/_form.html.twig', {'button_label': 'Modifier la langue'}) }}
+        </div>
+
+        {{ include('admin/language/_delete_form.html.twig') }}
+
+        <a href="{{ path('app_admin_language_index') }}" class="mt-8 p-2 block">&larr; Retour à la liste des langues</a>
+
+        {#    <div class="border-t mt-8 pt-4"></div>#}
+        {#    <ul>#}
+        {#        <li><b>Nombre de films:</b> {{ language.movies|length }}</li>#}
+        {#        <li><b>Nombre de séries:</b> {{ language.series|length }}</li>#}
+
+        {#        {% set lastMovie = language.movies|last %}#}
+        {#        {% set lastSerie = language.series|last %}#}
+
+        {#        {% if lastMovie %}#}
+        {#            <li><b>Dernier film ajouté:</b> <a href="{{ path('movie_detail', {'id': lastMovie.id}) }}" class="underline decoration-red-600">{{ lastMovie.title }}</a>#}
+        {#            </li>#}
+        {#        {% endif %}#}
+
+        {#        {% if lastSerie %}#}
+        {#            <li><b>Dernière série ajoutée:</b> <a href="{{ path('movie_detail', {'id': lastSerie.id}) }}" class="underline decoration-red-600">{{ lastSerie.title }}</a>#}
+        {#            </li>#}
+        {#        {% endif %}#}
+        {#    </ul>#}
+    </div>
+{% endblock %}
