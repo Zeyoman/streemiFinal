@@ -31,9 +31,16 @@ class Playlist
     #[ORM\ManyToMany(targetEntity: PlaylistSubscriptions::class, mappedBy: 'playlistId')]
     private Collection $playlistSubscriptions;
 
+    /**
+     * @var Collection<int, PlaylistMedia>
+     */
+    #[ORM\ManyToMany(targetEntity: PlaylistMedia::class, mappedBy: 'playlistId')]
+    private Collection $playlistMedia;
+
     public function __construct()
     {
         $this->playlistSubscriptions = new ArrayCollection();
+        $this->playlistMedia = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -99,6 +106,33 @@ class Playlist
     {
         if ($this->playlistSubscriptions->removeElement($playlistSubscription)) {
             $playlistSubscription->removePlaylistId($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PlaylistMedia>
+     */
+    public function getPlaylistMedia(): Collection
+    {
+        return $this->playlistMedia;
+    }
+
+    public function addPlaylistMedium(PlaylistMedia $playlistMedium): static
+    {
+        if (!$this->playlistMedia->contains($playlistMedium)) {
+            $this->playlistMedia->add($playlistMedium);
+            $playlistMedium->addPlaylistId($this);
+        }
+
+        return $this;
+    }
+
+    public function removePlaylistMedium(PlaylistMedia $playlistMedium): static
+    {
+        if ($this->playlistMedia->removeElement($playlistMedium)) {
+            $playlistMedium->removePlaylistId($this);
         }
 
         return $this;

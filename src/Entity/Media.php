@@ -59,11 +59,18 @@ class Media
     #[ORM\OneToMany(targetEntity: Comments::class, mappedBy: 'mediaId')]
     private Collection $comments;
 
+    /**
+     * @var Collection<int, PlaylistMedia>
+     */
+    #[ORM\ManyToMany(targetEntity: PlaylistMedia::class, mappedBy: 'mediaId')]
+    private Collection $playlistMedia;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
         $this->languages = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->playlistMedia = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -240,6 +247,33 @@ class Media
             if ($comment->getMediaId() === $this) {
                 $comment->setMediaId(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PlaylistMedia>
+     */
+    public function getPlaylistMedia(): Collection
+    {
+        return $this->playlistMedia;
+    }
+
+    public function addPlaylistMedium(PlaylistMedia $playlistMedium): static
+    {
+        if (!$this->playlistMedia->contains($playlistMedium)) {
+            $this->playlistMedia->add($playlistMedium);
+            $playlistMedium->addMediaId($this);
+        }
+
+        return $this;
+    }
+
+    public function removePlaylistMedium(PlaylistMedia $playlistMedium): static
+    {
+        if ($this->playlistMedia->removeElement($playlistMedium)) {
+            $playlistMedium->removeMediaId($this);
         }
 
         return $this;
