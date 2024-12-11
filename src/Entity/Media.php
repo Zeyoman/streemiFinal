@@ -53,10 +53,17 @@ class Media
     #[ORM\ManyToMany(targetEntity: Language::class, inversedBy: 'media')]
     private Collection $languages;
 
+    /**
+     * @var Collection<int, Comments>
+     */
+    #[ORM\OneToMany(targetEntity: Comments::class, mappedBy: 'mediaId')]
+    private Collection $comments;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
         $this->languages = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -204,6 +211,36 @@ class Media
     public function removeLanguage(Language $language): static
     {
         $this->languages->removeElement($language);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Comments>
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comments $comment): static
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setMediaId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comments $comment): static
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getMediaId() === $this) {
+                $comment->setMediaId(null);
+            }
+        }
 
         return $this;
     }

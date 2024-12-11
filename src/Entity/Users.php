@@ -38,9 +38,23 @@ class Users
     #[ORM\OneToMany(targetEntity: SubscriptionHistory::class, mappedBy: 'user')]
     private Collection $subscriptionHistories;
 
+    /**
+     * @var Collection<int, PlaylistSubscriptions>
+     */
+    #[ORM\ManyToMany(targetEntity: PlaylistSubscriptions::class, mappedBy: 'userId')]
+    private Collection $playlistSubscriptions;
+
+    /**
+     * @var Collection<int, Comments>
+     */
+    #[ORM\OneToMany(targetEntity: Comments::class, mappedBy: 'userId')]
+    private Collection $comments;
+
     public function __construct()
     {
         $this->subscriptionHistories = new ArrayCollection();
+        $this->playlistSubscriptions = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -135,6 +149,63 @@ class Users
             // set the owning side to null (unless already changed)
             if ($subscriptionHistory->getUser() === $this) {
                 $subscriptionHistory->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PlaylistSubscriptions>
+     */
+    public function getPlaylistSubscriptions(): Collection
+    {
+        return $this->playlistSubscriptions;
+    }
+
+    public function addPlaylistSubscription(PlaylistSubscriptions $playlistSubscription): static
+    {
+        if (!$this->playlistSubscriptions->contains($playlistSubscription)) {
+            $this->playlistSubscriptions->add($playlistSubscription);
+            $playlistSubscription->addUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removePlaylistSubscription(PlaylistSubscriptions $playlistSubscription): static
+    {
+        if ($this->playlistSubscriptions->removeElement($playlistSubscription)) {
+            $playlistSubscription->removeUserId($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Comments>
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comments $comment): static
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comments $comment): static
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getUserId() === $this) {
+                $comment->setUserId(null);
             }
         }
 
